@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "RB_Tree.h"
 template <class T>
-RB_Tree<T>::RB_Tree(T Root_Data):Root_Node(NULL)
-{	
-	if (Root_Node == NULL)
-	{
-		Root_Node = new RB_Tree_Node<T>(Root_Data);
-		Root_Node->color_tag = 0;
-	}
+// æ„é€ å‡½æ•°åˆå§‹åŒ–çº¢é»‘æ ‘ï¼Œåˆ›å»ºæ ¹èŠ‚ç‚¹å¹¶å°†å…¶é¢œè‰²è®¾ç½®ä¸ºé»‘è‰²
+RB_Tree<T>::RB_Tree(T Root_Data) : Root_Node(NULL)
+{
+    // åˆ›å»ºæ ¹èŠ‚ç‚¹å¹¶å°†å…¶é¢œè‰²è®¾ç½®ä¸ºé»‘è‰²
+    Root_Node = new RB_Tree_Node<T>(Root_Data);
+    Root_Node->color_tag = 0;
 }
 
 template <class T>
@@ -15,25 +14,26 @@ RB_Tree<T>::~RB_Tree()
 {
 }
 /************************************************************************/
-/* º¯Êı¹¦ÄÜ£ºÏòºìºÚÊ÷ÖĞ²åÈëÒ»¸ö½Úµã                                     */
-// Èë¿Ú²ÎÊı£º²åÈëµÄÊı¾İ
-// ·µ»ØÖµ£ºÎŞ
+/* å‡½æ•°åŠŸèƒ½ï¼šå‘çº¢é»‘æ ‘ä¸­æ’å…¥ä¸€ä¸ªèŠ‚ç‚¹                                     */
+// å…¥å£å‚æ•°ï¼šæ’å…¥çš„æ•°æ®
+// è¿”å›å€¼ï¼šæ— 
 /************************************************************************/
 template <class T>
 void RB_Tree<T>::Insert_Node(T insert_data)
 {
 	
-	RB_Tree_Node<T>* temp_Node = Root_Node;
-	while(temp_Node != NULL)
+	RB_Tree_Node<T>* temp_Node = Root_Node;//Rootnode æ•´æ£µæ ‘çš„æ ¹èŠ‚ç‚¹
+	while(temp_Node != NULL)//tempnode æ˜¯å¾…æ’å…¥èŠ‚ç‚¹çš„æ ¹èŠ‚ç‚¹
 	{
 		if (insert_data > temp_Node->data)
 		{
 			if (temp_Node->Right_child == NULL)
 			{
+				//æ’å…¥èŠ‚ç‚¹ é‚£ä¹ˆå°±å¯¹åº”ä¸ºèŠ‚ç‚¹çš„æ•°æ®èµ‹å€¼ è®°å¾—å°†çˆ¶ç»“ç‚¹ä¹Ÿèµ‹å€¼ ç„¶åé¢œè‰²æ ‡è®°
 				temp_Node->Right_child = new RB_Tree_Node<T>(insert_data);
 				temp_Node->Right_child->color_tag = 1;
 				temp_Node->Right_child->Father_Node = temp_Node;
-				if (temp_Node->color_tag == 1)
+				if (temp_Node->color_tag == 1)//æ’å…¥èŠ‚ç‚¹æ˜¯çº¢è‰² éœ€ä¿®å¤
 				{
 					Fix_Tree(temp_Node->Right_child);
 				}				
@@ -41,7 +41,7 @@ void RB_Tree<T>::Insert_Node(T insert_data)
 			}
 			else
 			{
-				temp_Node = temp_Node->Right_child;
+				temp_Node = temp_Node->Right_child;//æ‰¾åˆ°æ’å…¥çš„åœ°æ–¹
 			}			
 		}
 		else
@@ -59,16 +59,16 @@ void RB_Tree<T>::Insert_Node(T insert_data)
 			}
 			else
 			{
-				temp_Node = temp_Node->Left_child;
+				temp_Node = temp_Node->Left_child;//æ‰¾åˆ°æ’å…¥çš„åœ°æ–¹
 			}			
 		}
 	}	
 }
 
 /************************************************************************/
-/* º¯Êı¹¦ÄÜ£º´ÓºìºÚÊ÷ÖĞËÑÑ°ÒªÉ¾³ıµÄÊı¾İ½Úµã                             */
-// Èë¿Ú²ÎÊı£ºÉ¾³ıµÄÊı¾İ
-// ·µ»ØÖµ£º1±íÊ¾É¾³ı³É¹¦ -1±íÊ¾É¾³ıÊ§°Ü
+/* å‡½æ•°åŠŸèƒ½ï¼šä»çº¢é»‘æ ‘ä¸­æœå¯»è¦åˆ é™¤çš„æ•°æ®èŠ‚ç‚¹                             */
+// å…¥å£å‚æ•°ï¼šåˆ é™¤çš„æ•°æ®
+// è¿”å›å€¼ï¼š1è¡¨ç¤ºåˆ é™¤æˆåŠŸ -1è¡¨ç¤ºåˆ é™¤å¤±è´¥
 /************************************************************************/
 template<class T>
 int RB_Tree<T>::Delete_Node(T delete_data)
@@ -86,30 +86,32 @@ int RB_Tree<T>::Delete_Node(T delete_data)
 		}
 	}	
 	if (temp_Node)
-	//ÕÒµ½·µ»ØµÄÊı¾İ
+	//æ‰¾åˆ°è¿”å›çš„æ•°æ®
 	{
 		int color_tag = temp_Node->color_tag;
 		
 		if (temp_Node->Left_child == NULL && temp_Node->Right_child == NULL)
-		//×óÓÒ×ÓÊ÷Îª¿ÕÔòÖ±½ÓÉ¾³ı
+		//å·¦å³å­æ ‘ä¸ºç©ºåˆ™ç›´æ¥åˆ é™¤
 		{
 			//			
 			delete temp_Node;
 		}
 		else
 		if (temp_Node->Left_child == NULL && temp_Node->Right_child != NULL)
-		//×ó×ÓÊ÷Îª¿Õ,ÓÒ×ÓÊ÷²»Îª¿Õ
+		//å¾…åˆ é™¤èŠ‚ç‚¹çš„å·¦å­æ ‘ä¸ºç©º,å³å­æ ‘ä¸ä¸ºç©º
 		{				
 			if (temp_Node != Root_Node)
-			//²»Îª¸ù½Úµã
+			//ä¸ä¸ºæ ¹èŠ‚ç‚¹ å¾…åˆ é™¤èŠ‚ç‚¹æœ‰çˆ¶ç»“ç‚¹
 			{
+				// å¾…åˆ é™¤èŠ‚ç‚¹æ˜¯çˆ¶ç»“ç‚¹çš„å·¦å­©å­
 				if (temp_Node->Father_Node->Left_child == temp_Node)
 				{
+					// çˆ¶ç»“ç‚¹çš„å·¦å­©å­ç›´æ¥æŒ‡å‘å¾…åˆ é™¤èŠ‚ç‚¹çš„å³å­©å­ æ›´æ–°å³å­©å­çš„çˆ¶ç»“ç‚¹æŒ‡é’ˆ
 					temp_Node->Father_Node->Left_child = temp_Node->Right_child;
 					temp_Node->Right_child->Father_Node = temp_Node->Father_Node;
 					
 				}
-				else
+				else//å¾…åˆ é™¤èŠ‚ç‚¹æ˜¯çˆ¶ç»“ç‚¹çš„å³å­©å­ ç›´æ¥è®©çˆ¶ç»“ç‚¹çš„å³å­©å­æŒ‡å‘å¾…åˆ é™¤èŠ‚ç‚¹çš„å³å­©å­ æ›´æ–°å³å­©å­çš„çˆ¶ç»“ç‚¹æŒ‡é’ˆ
 				{
 					temp_Node->Father_Node->Right_child = temp_Node->Right_child;
 					temp_Node->Right_child->Father_Node = temp_Node->Father_Node;
@@ -117,18 +119,18 @@ int RB_Tree<T>::Delete_Node(T delete_data)
 				}
 			}
 			else
-			//¸ù½Úµã
+			//æ ¹èŠ‚ç‚¹ å¾…åˆ é™¤èŠ‚ç‚¹æ²¡æœ‰çˆ¶ç»“ç‚¹ ç›´æ¥åˆ é™¤ æ ¹èŠ‚ç‚¹å˜ä¸ºå¾…åˆ é™¤èŠ‚ç‚¹çš„å³å­©å­
 			{
 				Root_Node = temp_Node->Right_child;
-				temp_Node->Right_child->Father_Node = Root_Node;
+				temp_Node->Right_child->Father_Node = NULL;
 				
 			}
 		}
 		else if (temp_Node->Left_child != NULL && temp_Node->Right_child == NULL)
-		//×ó×ÓÊ÷²»Îª¿Õ,ÓÒ×ÓÊ÷Îª¿Õ
+		//å·¦å­æ ‘ä¸ä¸ºç©º,å³å­æ ‘ä¸ºç©º
 		{
 			if (temp_Node != Root_Node)
-				//²»Îª¸ù½Úµã
+				//ä¸ä¸ºæ ¹èŠ‚ç‚¹
 			{
 				if (temp_Node->Father_Node->Left_child == temp_Node)
 				{
@@ -144,15 +146,15 @@ int RB_Tree<T>::Delete_Node(T delete_data)
 				}
 			}
 			else
-				//¸ù½Úµã
+				//æ ¹èŠ‚ç‚¹
 			{
 				Root_Node = temp_Node->Left_child;
-				temp_Node->Left_child->Father_Node = Root_Node;
+				temp_Node->Left_child->Father_Node = NULL;
 				//delete temp_Node;
 			}
 		}
 		else if (temp_Node->Left_child != NULL && temp_Node->Right_child != NULL)
-		//×óÓÒ×ÓÊ÷¶¼²»Îª¿Õ
+		//å·¦å³å­æ ‘éƒ½ä¸ä¸ºç©º
 		{
 			RB_Tree_Node<T>* Successor_Node = Find_Successor_Node(temp_Node);
 			if (temp_Node == temp_Node->Father_Node->Left_child)
@@ -185,12 +187,12 @@ int RB_Tree<T>::Delete_Node(T delete_data)
 		}
 		
 		if (color_tag == 0)
-		//Èç¹ûÉ¾³ıµÄ½ÚµãÎªºÚÉ«  ÔòĞèµ÷ÕûºìºÚÊ÷
+		//å¦‚æœåˆ é™¤çš„èŠ‚ç‚¹ä¸ºé»‘è‰²  åˆ™éœ€è°ƒæ•´çº¢é»‘æ ‘
 		{
 			Fix_Tree_Delete(RB_Tree_Node<T>* temp_Node)
 		}
 	}
-	//Î´·¢ÏÖÉ¾³ıµÄÊı¾İ  ·µ»Ø-1
+	//æœªå‘ç°åˆ é™¤çš„æ•°æ®  è¿”å›-1
 	else
 	{
 		return -1;
@@ -200,9 +202,9 @@ int RB_Tree<T>::Delete_Node(T delete_data)
 }
 
 /************************************************************************/
-/* º¯Êı¹¦ÄÜ£º²åÈë½ÚµãºóĞŞÕûºìºÚÊ÷£¬±£Ö¤Âú×ãĞÔÖÊ                         */
-// Èë¿Ú²ÎÊı£º²åÈëµÄµ±Ç°½Úµã
-// ·µ»ØÖµ£ºÎŞ
+/* å‡½æ•°åŠŸèƒ½ï¼šæ’å…¥èŠ‚ç‚¹åä¿®æ•´çº¢é»‘æ ‘ï¼Œä¿è¯æ»¡è¶³æ€§è´¨                         */
+// å…¥å£å‚æ•°ï¼šæ’å…¥çš„å½“å‰èŠ‚ç‚¹
+// è¿”å›å€¼ï¼šæ— 
 /************************************************************************/
 template <class T>
 void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
@@ -227,11 +229,11 @@ void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
 			if (father_Node == grandfa_Node->Left_child)
 			{
 				uncle_Node = grandfa_Node->Right_child;
-				//Èç¹ûÓĞÊåÊå½ÚµãÊ±
+				//å¦‚æœæœ‰å”å”èŠ‚ç‚¹æ—¶
 				if (uncle_Node)
 				{
-					//Çé¿ö1 ÊåÊåÎªºìÉ«  ½«¸¸Ç×½ÚµãºÍÊåÊå½ÚµãÉèÖÃÎªºÚÉ« 
-					//×æ¸¸½ÚµãÉèÖÃÎªºìÉ« ½«×æ¸¸½ÚµãÉèÖÃÎªµ±Ç°½Úµã
+					//æƒ…å†µ1 å”å”ä¸ºçº¢è‰²  å°†çˆ¶äº²èŠ‚ç‚¹å’Œå”å”èŠ‚ç‚¹è®¾ç½®ä¸ºé»‘è‰² 
+					//ç¥–çˆ¶èŠ‚ç‚¹è®¾ç½®ä¸ºçº¢è‰² å°†ç¥–çˆ¶èŠ‚ç‚¹è®¾ç½®ä¸ºå½“å‰èŠ‚ç‚¹
 					if (uncle_Node->color_tag == 1)
 					{
 						uncle_Node->color_tag = 0;
@@ -239,13 +241,13 @@ void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
 						grandfa_Node->color_tag = 1;						
 						temp_current_Node = grandfa_Node;						
 					}
-					//Çé¿ö2£ºÊåÊåÊÇºÚÉ« ÇÒµ±Ç°½ÚµãÎªÓÒº¢×Ó ½«¸¸½Úµã×÷Îªµ±Ç°½Úµã ¶Ô¸¸½Úµã½øĞĞ×óĞı
+					//æƒ…å†µ2ï¼šå”å”æ˜¯é»‘è‰² ä¸”å½“å‰èŠ‚ç‚¹ä¸ºå³å­©å­ å°†çˆ¶èŠ‚ç‚¹ä½œä¸ºå½“å‰èŠ‚ç‚¹ å¯¹çˆ¶èŠ‚ç‚¹è¿›è¡Œå·¦æ—‹
 					else if (temp_current_Node == father_Node->Right_child)
 					{
 						temp_current_Node = temp_current_Node->Father_Node;						
 						Left_Rotate(temp_current_Node);					
 					}
-					//Çé¿ö3£ºÊåÊåÊÇºÚÉ« ÇÒµ±Ç°½ÚµãÎª×óº¢×Ó ½«¸¸½ÚµãÉèÎªºÚÉ« ×æ¸¸½ÚµãÉèÎªºìÉ« ¶Ô×æ¸¸½ÚµãÓÒĞı
+					//æƒ…å†µ3ï¼šå”å”æ˜¯é»‘è‰² ä¸”å½“å‰èŠ‚ç‚¹ä¸ºå·¦å­©å­ å°†çˆ¶èŠ‚ç‚¹è®¾ä¸ºé»‘è‰² ç¥–çˆ¶èŠ‚ç‚¹è®¾ä¸ºçº¢è‰² å¯¹ç¥–çˆ¶èŠ‚ç‚¹å³æ—‹
 					else
 					{
 						father_Node->color_tag = 0;
@@ -253,7 +255,7 @@ void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
 						Right_Rotate(grandfa_Node);				
 					}					
 				}
-				//Ã»ÓĞÊåÊå½ÚµãÊ±
+				//æ²¡æœ‰å”å”èŠ‚ç‚¹æ—¶
 				else
 				{
 					if (temp_current_Node == father_Node->Right_child)
@@ -274,8 +276,8 @@ void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
 				uncle_Node = grandfa_Node->Left_child;
 				if (uncle_Node)
 				{
-					//Çé¿ö1 ÊåÊåÎªºìÉ«  ½«¸¸Ç×½ÚµãºÍÊåÊå½ÚµãÉèÖÃÎªºÚÉ« 
-					//×æ¸¸½ÚµãÉèÖÃÎªºìÉ« ½«×æ¸¸½ÚµãÉèÖÃÎªµ±Ç°½Úµã
+					//æƒ…å†µ1 å”å”ä¸ºçº¢è‰²  å°†çˆ¶äº²èŠ‚ç‚¹å’Œå”å”èŠ‚ç‚¹è®¾ç½®ä¸ºé»‘è‰² 
+					//ç¥–çˆ¶èŠ‚ç‚¹è®¾ç½®ä¸ºçº¢è‰² å°†ç¥–çˆ¶èŠ‚ç‚¹è®¾ç½®ä¸ºå½“å‰èŠ‚ç‚¹
 					if (uncle_Node->color_tag == 1)
 					{
 						uncle_Node->color_tag = 0;
@@ -283,13 +285,13 @@ void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
 						grandfa_Node->color_tag = 1;						
 						temp_current_Node = grandfa_Node;						
 					}
-					//Çé¿ö2£ºÊåÊåÊÇºÚÉ« ÇÒµ±Ç°½ÚµãÎªÓÒº¢×Ó ½«¸¸½Úµã×÷Îªµ±Ç°½Úµã ¶Ô¸¸½Úµã½øĞĞ×óĞı
+					//æƒ…å†µ2ï¼šå”å”æ˜¯é»‘è‰² ä¸”å½“å‰èŠ‚ç‚¹ä¸ºå³å­©å­ å°†çˆ¶èŠ‚ç‚¹ä½œä¸ºå½“å‰èŠ‚ç‚¹ å¯¹çˆ¶èŠ‚ç‚¹è¿›è¡Œå·¦æ—‹
 					else if (temp_current_Node == father_Node->Left_child)
 					{
 						temp_current_Node = temp_current_Node->Father_Node;
 						Right_Rotate(temp_current_Node);						
 					}
-					//Çé¿ö3£ºÊåÊåÊÇºÚÉ« ÇÒµ±Ç°½ÚµãÎª×óº¢×Ó ½«¸¸½ÚµãÉèÎªºÚÉ« ×æ¸¸½ÚµãÉèÎªºìÉ« ¶Ô×æ¸¸½ÚµãÓÒĞı
+					//æƒ…å†µ3ï¼šå”å”æ˜¯é»‘è‰² ä¸”å½“å‰èŠ‚ç‚¹ä¸ºå·¦å­©å­ å°†çˆ¶èŠ‚ç‚¹è®¾ä¸ºé»‘è‰² ç¥–çˆ¶èŠ‚ç‚¹è®¾ä¸ºçº¢è‰² å¯¹ç¥–çˆ¶èŠ‚ç‚¹å³æ—‹
 					else
 					{
 						father_Node->color_tag = 0;
@@ -319,9 +321,9 @@ void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
 }
 
 /************************************************************************/
-/* º¯Êı¹¦ÄÜ£º¶Ôµ±Ç°½Úµã½øĞĞ×óĞı²Ù×÷                                     */
-// Èë¿Ú²ÎÊı£º×óĞıµÄµ±Ç°½Úµã
-// ·µ»ØÖµ£ºÎŞ
+/* å‡½æ•°åŠŸèƒ½ï¼šå¯¹å½“å‰èŠ‚ç‚¹è¿›è¡Œå·¦æ—‹æ“ä½œ                                     */
+// å…¥å£å‚æ•°ï¼šå·¦æ—‹çš„å½“å‰èŠ‚ç‚¹
+// è¿”å›å€¼ï¼šæ— 
 /************************************************************************/
 template <class T>
 void RB_Tree<T>::Left_Rotate(RB_Tree_Node<T>* current_Node)
@@ -349,9 +351,9 @@ void RB_Tree<T>::Left_Rotate(RB_Tree_Node<T>* current_Node)
 }
 
 /************************************************************************/
-/* º¯Êı¹¦ÄÜ£º¶Ôµ±Ç°½Úµã½øĞĞÓÒĞı²Ù×÷                                     */
-// Èë¿Ú²ÎÊı£ºÓÒĞıµÄµ±Ç°½Úµã
-// ·µ»ØÖµ£ºÎŞ
+/* å‡½æ•°åŠŸèƒ½ï¼šå¯¹å½“å‰èŠ‚ç‚¹è¿›è¡Œå³æ—‹æ“ä½œ                                     */
+// å…¥å£å‚æ•°ï¼šå³æ—‹çš„å½“å‰èŠ‚ç‚¹
+// è¿”å›å€¼ï¼šæ— 
 /************************************************************************/
 template <class T>
 void RB_Tree<T>::Right_Rotate(RB_Tree_Node<T>* current_Node)
@@ -378,9 +380,9 @@ void RB_Tree<T>::Right_Rotate(RB_Tree_Node<T>* current_Node)
 
 
 /************************************************************************/
-/* º¯Êı¹¦ÄÜ£ºÕÒÑ°µ±Ç°½ÚµãµÄÖĞĞòºó¼Ì½Úµã                                 */
-// Èë¿Ú²ÎÊı£ºµ±Ç°½Úµã
-// ·µ»ØÖµ£ºµ±Ç°½ÚµãµÄÖĞĞòºó¼Ì½Úµã
+/* å‡½æ•°åŠŸèƒ½ï¼šæ‰¾å¯»å½“å‰èŠ‚ç‚¹çš„ä¸­åºåç»§èŠ‚ç‚¹                                 */
+// å…¥å£å‚æ•°ï¼šå½“å‰èŠ‚ç‚¹
+// è¿”å›å€¼ï¼šå½“å‰èŠ‚ç‚¹çš„ä¸­åºåç»§èŠ‚ç‚¹
 /************************************************************************/
 template<class T>
 RB_Tree_Node<T>* RB_Tree<T>::Find_Successor_Node(RB_Tree_Node<T>* current_Node)
@@ -394,9 +396,9 @@ RB_Tree_Node<T>* RB_Tree<T>::Find_Successor_Node(RB_Tree_Node<T>* current_Node)
 }
 
 /************************************************************************/
-/* º¯Êı¹¦ÄÜ£ºÇå³ı¸Ã½ÚµãÏà¹ØµÄËùÓĞĞÅÏ¢                                   */
-// Èë¿Ú²ÎÊı£ºµ±Ç°½Úµã
-// ·µ»ØÖµ£ºÎŞ
+/* å‡½æ•°åŠŸèƒ½ï¼šæ¸…é™¤è¯¥èŠ‚ç‚¹ç›¸å…³çš„æ‰€æœ‰ä¿¡æ¯                                   */
+// å…¥å£å‚æ•°ï¼šå½“å‰èŠ‚ç‚¹
+// è¿”å›å€¼ï¼šæ— 
 /************************************************************************/
 template<class T>
 void RB_Tree<T>::erase_Node(RB_Tree_Node<T>* Node_del)
@@ -411,4 +413,33 @@ void RB_Tree<T>::erase_Node(RB_Tree_Node<T>* Node_del)
 	Node_del->Right_child = NULL;
 	Node_del->data = NULL;	
 	delete Node_del;
+}
+
+/************************************************************************/
+/* å‡½æ•°åŠŸèƒ½ï¼šæŸ¥æ‰¾æ•°æ®                                   */
+// å…¥å£å‚æ•°ï¼šå½“å‰èŠ‚ç‚¹
+// è¿”å›å€¼ï¼šæ‰¾åˆ°è¿”å›æ•°æ® æ²¡æ‰¾åˆ°è¿”å›null
+/************************************************************************/
+template <class T>
+RB_Tree_Node<T>* RB_Tree<T>::Find_Node(T search_data) const
+{
+    RB_Tree_Node<T>* current = Root_Node;
+
+    while (current != nullptr)
+    {
+        if (search_data == current->data)
+        {
+            return current; // æ‰¾åˆ°èŠ‚ç‚¹ï¼Œè¿”å›æŒ‡é’ˆ
+        }
+        else if (search_data < current->data)
+        {
+            current = current->Left_child; // åœ¨å·¦å­æ ‘ä¸­æŸ¥æ‰¾
+        }
+        else
+        {
+            current = current->Right_child; // åœ¨å³å­æ ‘ä¸­æŸ¥æ‰¾
+        }
+    }
+
+    return nullptr; // æœªæ‰¾åˆ°èŠ‚ç‚¹
 }
