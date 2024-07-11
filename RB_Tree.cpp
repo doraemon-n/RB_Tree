@@ -30,6 +30,7 @@ void RB_Tree<T>::Insert_Node(T insert_data)
 			if (temp_Node->Right_child == NULL)
 			{
 				//插入节点 那么就对应为节点的数据赋值 记得将父结点也赋值 然后颜色标记
+				//temp_Node->Right_child = std::make_unique<RB_Tree_Node<T>>(insert_data);
 				temp_Node->Right_child = new RB_Tree_Node<T>(insert_data);
 				temp_Node->Right_child->color_tag = 1;
 				temp_Node->Right_child->Father_Node = temp_Node;
@@ -73,6 +74,7 @@ void RB_Tree<T>::Insert_Node(T insert_data)
 template<class T>
 int RB_Tree<T>::Delete_Node(T delete_data)
 {	
+	//RB_Tree_Node<T>* temp_Node = Find_Node(delete_data);
 	RB_Tree_Node<T>* temp_Node = Root_Node;
 	while(temp_Node->data != delete_data && temp_Node != NULL)
 	{
@@ -106,13 +108,16 @@ int RB_Tree<T>::Delete_Node(T delete_data)
 				// 待删除节点是父结点的左孩子
 				if (temp_Node->Father_Node->Left_child == temp_Node)
 				{
-					// 父结点的左孩子直接指向待删除节点的右孩子 更新右孩子的父结点指针
+					// 父结点的左孩子直接指向待删除节点的右孩子 更新右孩子的父结点指针					
+					//可以借助移动语义 意味着 temp_Node 将不再拥有它的右子节点的所有权，所有权已经被转移到 temp_Node->Father_Node
+					//temp_Node->Father_Node->Left_child = std::move(temp_Node->Right_child);
 					temp_Node->Father_Node->Left_child = temp_Node->Right_child;
 					temp_Node->Right_child->Father_Node = temp_Node->Father_Node;
 					
 				}
 				else//待删除节点是父结点的右孩子 直接让父结点的右孩子指向待删除节点的右孩子 更新右孩子的父结点指针
 				{
+					//temp_Node->Father_Node->Right_child = std::move(temp_Node->Right_child);
 					temp_Node->Father_Node->Right_child = temp_Node->Right_child;
 					temp_Node->Right_child->Father_Node = temp_Node->Father_Node;
 					
@@ -423,6 +428,8 @@ void RB_Tree<T>::erase_Node(RB_Tree_Node<T>* Node_del)
 template <class T>
 RB_Tree_Node<T>* RB_Tree<T>::Find_Node(T search_data) const
 {
+	// 如果使用智能指针 需要用get方法
+	// RB_Tree_Node<T>* current = Root_Node.get();
     RB_Tree_Node<T>* current = Root_Node;
 
     while (current != nullptr)
@@ -433,10 +440,12 @@ RB_Tree_Node<T>* RB_Tree<T>::Find_Node(T search_data) const
         }
         else if (search_data < current->data)
         {
+		//current = current->Left_child.get();
             current = current->Left_child; // 在左子树中查找
         }
         else
         {
+		//current = current->Right_chile.get();
             current = current->Right_child; // 在右子树中查找
         }
     }
