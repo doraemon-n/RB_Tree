@@ -2,6 +2,7 @@
 #define RB_TREE_NODE_H
 //#pragma once
 #include "stdafx.h"
+#include<memory>//智能指针
 template <class T>
 class RB_Tree_Node
 {
@@ -10,9 +11,11 @@ public:
 	~RB_Tree_Node(void);
 	RB_Tree_Node* Left_child;
 	RB_Tree_Node* Right_child;
+	// std::unique_ptr<RB_Tree_Node> Left_child;
+ 	//std::unique_ptr<RB_Tree_Node> Right_child;
 	RB_Tree_Node* Father_Node;
 	T data;
-	int color_tag; //1±íÊ¾ºìÉ« 0±íÊ¾ºÚÉ«
+	int color_tag; //1 红色 0 黑色
 };
 
 #endif
