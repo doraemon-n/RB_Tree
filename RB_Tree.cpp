@@ -324,7 +324,7 @@ void RB_Tree<T>::Fix_Tree(RB_Tree_Node<T>* current_Node)
 	Root_Node->color_tag = 0;
 
 }
-
+//左单旋和右单旋 参考https://blog.csdn.net/dajiangyou123456/article/details/103466529
 /************************************************************************/
 /* 函数功能：对当前节点进行左旋操作                                     */
 // 入口参数：左旋的当前节点
